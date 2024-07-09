@@ -5,3 +5,12 @@
   box-sizing: border-box;
   font-family: "roboto", sans-serif;
 }
+
+.app {
+  padding: 15px;
+}
+@media screen and (max-width: 500px) {
+  .app {
+    padding: 0;
+  }
+}

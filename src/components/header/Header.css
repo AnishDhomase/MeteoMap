@@ -1,0 +1,61 @@
+.navbar {
+  background-color: rgb(225, 225, 255);
+  padding: 15px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+.navbar .saved {
+  display: flex;
+  gap: 10px;
+}
+.navbar .account {
+  display: flex;
+  gap: 10px;
+}
+.navbar .input {
+  background-color: white;
+  border-radius: 50px;
+  display: flex;
+  border: 1px solid #1976d2;
+}
+.navbar .input input {
+  padding: 10px 20px;
+  outline: none;
+  border: none;
+  min-width: 300px;
+  border-radius: 50px;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+
+.navbar .menu {
+  display: none;
+}
+.navbar .accPanel {
+  padding: 50px;
+  background-color: red;
+  position: absolute;
+  right: 20px;
+  top: 80px;
+  border-radius: 10px;
+}
+@media screen and (max-width: 750px) {
+  .navbar .saved,
+  .navbar .account {
+    display: none;
+  }
+  .navbar .menu {
+    display: block;
+  }
+}
+@media screen and (max-width: 500px) {
+  .navbar {
+    padding: 10px 5px;
+    border-radius: 0;
+  }
+  .navbar .input input {
+    min-width: 200px;
+  }
+}

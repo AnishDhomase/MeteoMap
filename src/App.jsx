@@ -1,12 +1,10 @@
-import { colors, Typography } from "@mui/material";
+import Header from "./components/header/Header";
 
 function App() {
   return (
-    <>
-      <Typography variant="h2" sx={{ color: "gray" }}>
-        Anish
-      </Typography>
-    </>
+    <div className="app">
+      <Header />
+    </div>
   );
 }
 
