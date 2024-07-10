@@ -1,12 +1,5 @@
-import {
-  backdropClasses,
-  Badge,
-  Button,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Badge, Button, IconButton, Tooltip } from "@mui/material";
+
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
@@ -17,15 +10,19 @@ import SearchBarAutoComplete from "../searchBarAutoComplete/SearchBarAutoComplet
 import "./Header.css";
 import AccountPanel from "./accountPanel/AccountPanel";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import SavedPanel from "./savedPanel/SavedPanel";
 
 function Header() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
+  const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
   return (
     <nav className="navbar">
       <div className="saved">
         <Tooltip title="Saved">
-          <IconButton variant="outlined">
+          <IconButton
+            variant="outlined"
+            onClick={() => setIsSavedPanelOpen(!isSavedPanelOpen)}
+          >
             <Badge
               badgeContent={1}
               max={9}
@@ -48,6 +45,7 @@ function Header() {
             </Badge>
           </IconButton>
         </Tooltip>
+        <SavedPanel show={isSavedPanelOpen} />
       </div>
 
       <div className="input">

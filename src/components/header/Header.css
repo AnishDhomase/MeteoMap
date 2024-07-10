@@ -35,11 +35,31 @@
 }
 .navbar .accPanel {
   padding: 50px;
-  background-color: red;
+  background-color: rgb(225, 225, 255);
   position: absolute;
   right: 20px;
   top: 80px;
   border-radius: 10px;
+}
+.navbar .savedPanel {
+  min-width: 300px;
+  padding: 15px;
+  background-color: rgb(225, 225, 255);
+  background-color: #198bfd;
+  position: absolute;
+  left: 20px;
+  top: 60px;
+  border-radius: 10px;
+  color: white;
+}
+.navbar .savedPanel .location {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar .savedPanel .location .loc:hover {
+  text-decoration: underline;
 }
 @media screen and (max-width: 750px) {
   .navbar .saved,
