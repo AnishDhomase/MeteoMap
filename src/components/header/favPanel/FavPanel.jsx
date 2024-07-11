@@ -3,16 +3,17 @@ import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 
-SavedPanel.propTypes = {
+FavPanel.propTypes = {
   show: PropTypes.bool,
+  setIsSavedPanelOpen: PropTypes.func,
 };
 
-function SavedPanel({ show }) {
+function FavPanel({ show }) {
   return (
     <AnimatePresence mode="popLayout">
       {show && (
         <motion.div
-          className="savedPanel panel"
+          className="favPanel panel"
           initial={{
             opacity: 0,
             y: -30,
@@ -48,4 +49,4 @@ function SavedPanel({ show }) {
   );
 }
 
-export default SavedPanel;
+export default FavPanel;

@@ -1,4 +1,4 @@
-import { Badge, Button, IconButton, Tooltip } from "@mui/material";
+import { Badge, Button, IconButton } from "@mui/material";
 
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -11,41 +11,52 @@ import "./Header.css";
 import AccountPanel from "./accountPanel/AccountPanel";
 import { useState } from "react";
 import SavedPanel from "./savedPanel/SavedPanel";
+import FavPanel from "./favPanel/FavPanel";
+import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
 
 function Header() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
   const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
+  const [isFavPanelOpen, setIsFavPanelOpen] = useState(false);
   return (
     <nav className="navbar">
       <div className="saved">
-        <Tooltip title="Saved">
-          <IconButton
-            variant="outlined"
-            onClick={() => setIsSavedPanelOpen(!isSavedPanelOpen)}
+        <TooltipIcon
+          title="Saved"
+          onBtnClick={() => {
+            setIsSavedPanelOpen((isSavedPanelOpen) => !isSavedPanelOpen);
+            setIsFavPanelOpen(false);
+          }}
+          active={isSavedPanelOpen}
+        >
+          <Badge
+            badgeContent={1}
+            max={9}
+            color="primary"
+            sx={{ cursor: "pointer" }}
           >
-            <Badge
-              badgeContent={1}
-              max={9}
-              color="primary"
-              sx={{ cursor: "pointer" }}
-            >
-              <BookmarkIcon />
-            </Badge>
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Favourite">
-          <IconButton variant="outlined">
-            <Badge
-              badgeContent={1}
-              max={9}
-              color="primary"
-              sx={{ cursor: "pointer" }}
-            >
-              <FavoriteIcon />
-            </Badge>
-          </IconButton>
-        </Tooltip>
+            <BookmarkIcon />
+          </Badge>
+        </TooltipIcon>
+        <TooltipIcon
+          title="Favourite"
+          onBtnClick={() => {
+            setIsFavPanelOpen((isFavPanelOpen) => !isFavPanelOpen);
+            setIsSavedPanelOpen(false);
+          }}
+          active={isFavPanelOpen}
+        >
+          <Badge
+            badgeContent={1}
+            max={9}
+            color="primary"
+            sx={{ cursor: "pointer" }}
+          >
+            <FavoriteIcon />
+          </Badge>
+        </TooltipIcon>
         <SavedPanel show={isSavedPanelOpen} />
+        <FavPanel show={isFavPanelOpen} />
       </div>
 
       <div className="input">
@@ -55,27 +66,28 @@ function Header() {
         </IconButton>
       </div>
 
-      <div className="account">
-        <Button variant="outlined">Login</Button>
-        <Tooltip title="Account">
-          <IconButton variant="outlined">
+      <div className="userSettings">
+        <div className="account">
+          <Button variant="outlined">Login</Button>
+          <TooltipIcon
+            title="Account"
+            onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
+            active={isAccPanelOpen}
+          >
             <PersonIcon />
-          </IconButton>
-        </Tooltip>
-      </div>
-
-      <div className="menu">
-        <Tooltip title="Saved">
-          <IconButton
-            variant="outlined"
-            onClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
+          </TooltipIcon>
+        </div>
+        <div className="menu">
+          <TooltipIcon
+            title="Saved"
+            onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
+            active={isAccPanelOpen}
           >
             <MenuIcon />
-          </IconButton>
-        </Tooltip>
+          </TooltipIcon>
+        </div>
+        <AccountPanel show={isAccPanelOpen} />
       </div>
-
-      <AccountPanel show={isAccPanelOpen} />
     </nav>
   );
 }

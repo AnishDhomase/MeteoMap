@@ -7,8 +7,12 @@
   position: relative;
 }
 .navbar .saved {
+  position: relative;
   display: flex;
   gap: 10px;
+}
+.navbar .userSettings {
+  position: relative;
 }
 .navbar .account {
   display: flex;
@@ -33,33 +37,63 @@
 .navbar .menu {
   display: none;
 }
-.navbar .accPanel {
-  padding: 50px;
-  background-color: rgb(225, 225, 255);
-  position: absolute;
-  right: 20px;
-  top: 80px;
-  border-radius: 10px;
-}
-.navbar .savedPanel {
+.navbar .panel {
   min-width: 300px;
   padding: 15px;
-  background-color: rgb(225, 225, 255);
   background-color: #198bfd;
   position: absolute;
-  left: 20px;
-  top: 60px;
+  top: 50px;
   border-radius: 10px;
   color: white;
 }
-.navbar .savedPanel .location {
+.navbar .savedPanel {
+  left: 15px;
+}
+.navbar .favPanel {
+  left: 65px;
+}
+.navbar .accPanel {
+  min-width: 200px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.navbar .toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.navbar .panel .location {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.navbar .savedPanel .location .loc:hover {
+.navbar .panel .location .loc:hover {
   text-decoration: underline;
+}
+.toogleBox {
+  justify-content: center;
+  display: flex;
+}
+.mode {
+  background-color: rgb(189, 216, 254);
+  border-radius: 50px;
+}
+.logout {
+  cursor: pointer;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+  background-color: transparent;
+}
+.logout:hover {
+  background-color: white;
+  color: #198bfd;
+  transition: 0.5s;
 }
 @media screen and (max-width: 750px) {
   .navbar .saved,
