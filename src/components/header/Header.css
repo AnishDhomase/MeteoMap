@@ -16,7 +16,12 @@
 }
 .navbar .account {
   display: flex;
+  align-items: center;
   gap: 10px;
+}
+.navbar .account .greet {
+  color: #1976d2;
+  font-weight: 500;
 }
 .navbar .input {
   background-color: white;

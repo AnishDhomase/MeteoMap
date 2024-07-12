@@ -1,23 +1,27 @@
-import { Badge, Button, IconButton } from "@mui/material";
-
+import { Badge } from "@mui/material";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useState } from "react";
 
-import SearchBarAutoComplete from "../searchBarAutoComplete/SearchBarAutoComplete";
 import "./Header.css";
 import AccountPanel from "./accountPanel/AccountPanel";
-import { useState } from "react";
 import SavedPanel from "./savedPanel/SavedPanel";
 import FavPanel from "./favPanel/FavPanel";
 import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
+import Authorize from "../utils/authorize/Authorize";
+import SearchedBox from "../searchBar/SearchedBox";
+import { useAppSettings } from "../../context/SettingsContext";
+import { useLocations } from "../../context/LocationsContext";
 
 function Header() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
   const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
   const [isFavPanelOpen, setIsFavPanelOpen] = useState(false);
+  const { favLocations, savedLocations } = useLocations();
+
+  const { isAuthorized } = useAppSettings();
   return (
     <nav className="navbar">
       <div className="saved">
@@ -30,7 +34,7 @@ function Header() {
           active={isSavedPanelOpen}
         >
           <Badge
-            badgeContent={1}
+            badgeContent={savedLocations.length}
             max={9}
             color="primary"
             sx={{ cursor: "pointer" }}
@@ -47,7 +51,7 @@ function Header() {
           active={isFavPanelOpen}
         >
           <Badge
-            badgeContent={1}
+            badgeContent={favLocations.length}
             max={9}
             color="primary"
             sx={{ cursor: "pointer" }}
@@ -59,16 +63,11 @@ function Header() {
         <FavPanel show={isFavPanelOpen} />
       </div>
 
-      <div className="input">
-        <SearchBarAutoComplete />
-        <IconButton>
-          <SearchIcon color="primary" />
-        </IconButton>
-      </div>
+      <SearchedBox />
 
       <div className="userSettings">
         <div className="account">
-          <Button variant="outlined">Login</Button>
+          <Authorize isAuthorized={isAuthorized} />
           <TooltipIcon
             title="Account"
             onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}

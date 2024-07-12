@@ -2,17 +2,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { useState } from "react";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { Typography } from "@mui/material";
+import { useAppSettings } from "../../../context/SettingsContext";
 
 AccountPanel.propTypes = {
   show: PropTypes.bool,
 };
 
 function AccountPanel({ show }) {
-  const [mode, setMode] = useState("light");
-  const [tempUnit, setTempUnit] = useState("C");
+  const { tempUnit, theme, setTempUnit, setTheme, isAuthorized } =
+    useAppSettings();
 
   return (
     <AnimatePresence mode="popLayout">
@@ -75,26 +75,26 @@ function AccountPanel({ show }) {
               <div className="mode">
                 <TooltipIcon
                   title="Light Mode"
-                  onBtnClick={() => setMode("light")}
-                  active={mode === "light"}
+                  onBtnClick={() => setTheme("light")}
+                  active={theme === "light"}
                 >
                   <LightModeIcon
-                    sx={mode === "light" ? { color: "#ffa952" } : {}}
+                    sx={theme === "light" ? { color: "#ffa952" } : {}}
                   />
                 </TooltipIcon>
                 <TooltipIcon
                   title="Dark Mode"
-                  onBtnClick={() => setMode("dark")}
-                  active={mode === "dark"}
+                  onBtnClick={() => setTheme("dark")}
+                  active={theme === "dark"}
                 >
                   <DarkModeIcon
-                    sx={mode === "dark" ? { color: "#27296d" } : {}}
+                    sx={theme === "dark" ? { color: "#27296d" } : {}}
                   />
                 </TooltipIcon>
               </div>
             </div>
           </div>
-          <button className="logout btn">LOGOUT</button>
+          {isAuthorized && <button className="logout btn">LOGOUT</button>}
         </motion.div>
       )}
     </AnimatePresence>
