@@ -2,10 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LocationsContext from "./context/LocationsContext";
 import SettingsContext from "./context/SettingsContext";
 import SearchedLocationContext from "./context/SearchedLocationContext";
-import Main from "./pages/Main";
-import Authorization from "./pages/Authorization";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
+import Main from "./pages/main/Main";
+import Authorization from "./pages/authorization/Authorization";
 
 const router = createBrowserRouter([
   { path: "/", element: <Main /> },

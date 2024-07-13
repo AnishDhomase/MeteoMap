@@ -1,8 +1,8 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 import "./Authorization.css";
-import { useAppSettings } from "../context/SettingsContext";
-import TooltipIcon from "../components/utils/tooltipIcon/TooltipIcon";
+import { useAppSettings } from "../../context/SettingsContext";
+import TooltipIcon from "../../components/utils/tooltipIcon/TooltipIcon";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import toast from "react-hot-toast";

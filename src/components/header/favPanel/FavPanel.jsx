@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { useLocations } from "../../../context/LocationsContext";
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
-import { panelConfig } from "../../helpers/panelConfig";
+import { panelConfig } from "../../../helpers/panelConfig";
 
 FavPanel.propTypes = {
   show: PropTypes.bool,

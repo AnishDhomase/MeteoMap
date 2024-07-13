@@ -5,7 +5,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { Typography } from "@mui/material";
 import { useAppSettings } from "../../../context/SettingsContext";
-import { panelConfig } from "../../helpers/panelConfig";
+import { panelConfig } from "../../../helpers/panelConfig";
 import toast from "react-hot-toast";
 
 AccountPanel.propTypes = {
