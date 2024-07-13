@@ -5,32 +5,33 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { Typography } from "@mui/material";
 import { useAppSettings } from "../../../context/SettingsContext";
+import { panelConfig } from "../../helpers/panelConfig";
+import toast from "react-hot-toast";
 
 AccountPanel.propTypes = {
   show: PropTypes.bool,
+  direction: PropTypes.string,
 };
 
-function AccountPanel({ show }) {
-  const { tempUnit, theme, setTempUnit, setTheme, isAuthorized } =
-    useAppSettings();
+function AccountPanel({ show, direction = "up" }) {
+  const {
+    tempUnit,
+    theme,
+    setTempUnit,
+    setTheme,
+    isAuthorized,
+    setIsAuthorized,
+  } = useAppSettings();
+  const config = panelConfig(direction);
 
   return (
     <AnimatePresence mode="popLayout">
       {show && (
         <motion.div
           className="accPanel panel"
-          initial={{
-            opacity: 0,
-            y: -30,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          exit={{
-            opacity: 0,
-            y: -30,
-          }}
+          initial={config.initial}
+          animate={config.animate}
+          exit={config.exit}
           transition={{
             duration: 1,
             ease: "backInOut",
@@ -94,7 +95,17 @@ function AccountPanel({ show }) {
               </div>
             </div>
           </div>
-          {isAuthorized && <button className="logout btn">LOGOUT</button>}
+          {isAuthorized && (
+            <button
+              className="logout btn"
+              onClick={() => {
+                toast.success(`Successfully Logout!`);
+                setIsAuthorized(null);
+              }}
+            >
+              LOGOUT
+            </button>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

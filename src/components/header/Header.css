@@ -1,10 +1,11 @@
 .navbar {
-  background-color: rgb(225, 225, 255);
+  background-color: #deeaff;
   padding: 15px;
   border-radius: 50px;
   display: flex;
   justify-content: space-between;
   position: relative;
+  margin: 5px;
 }
 .navbar .saved {
   position: relative;
@@ -19,28 +20,39 @@
   align-items: center;
   gap: 10px;
 }
-.navbar .account .greet {
+.navbar .greet {
   color: #1976d2;
   font-weight: 500;
+  text-transform: capitalize;
 }
 .navbar .input {
   background-color: white;
   border-radius: 50px;
   display: flex;
   border: 1px solid #1976d2;
+
+  width: 40%;
+  max-width: 350px;
+  min-width: 300px;
 }
 .navbar .input input {
   padding: 10px 20px;
   outline: none;
   border: none;
-  min-width: 300px;
+  width: 100%;
+  /* min-width: 300px; */
   border-radius: 50px;
   font-size: 18px;
   text-transform: capitalize;
 }
 
-.navbar .menu {
+/* .navbar .menu {
   display: none;
+} */
+.navbar .userSettings {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 .navbar .panel {
   min-width: 300px;
@@ -51,31 +63,31 @@
   border-radius: 10px;
   color: white;
 }
-.navbar .savedPanel {
+.savedPanel {
   left: 15px;
 }
-.navbar .favPanel {
+.favPanel {
   left: 65px;
 }
-.navbar .accPanel {
+.accPanel {
   min-width: 200px;
   right: 15px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-.navbar .toggles {
+.toggles {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.navbar .panel .location {
+.panel .location {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.navbar .panel .location .loc:hover {
+.panel .location .loc:hover {
   text-decoration: underline;
 }
 .toogleBox {
@@ -100,21 +112,55 @@
   color: #198bfd;
   transition: 0.5s;
 }
+.mobileLogin {
+  display: flex;
+  align-items: center;
+}
+.bottomNavBar {
+  position: fixed;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  width: 170px;
+  margin: 0 auto;
+  display: flex;
+  background-color: #deeaff;
+
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  gap: 10px;
+}
+.bottomNavBar .panel {
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 300px;
+
+  padding: 15px;
+  background-color: #198bfd;
+  border-radius: 10px;
+  color: white;
+}
 @media screen and (max-width: 750px) {
-  .navbar .saved,
-  .navbar .account {
-    display: none;
-  }
-  .navbar .menu {
-    display: block;
-  }
 }
 @media screen and (max-width: 500px) {
   .navbar {
     padding: 10px 5px;
     border-radius: 0;
+    margin: 0;
   }
   .navbar .input input {
     min-width: 200px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .navbar .input {
+    width: 90%;
+    min-width: 100px;
+    margin-right: 10px;
   }
 }

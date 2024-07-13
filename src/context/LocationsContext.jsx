@@ -9,12 +9,12 @@ const AppLocationsContext = createContext();
 
 function LocationsContext({ children }) {
   const [savedLocations, setSavedLocations] = useState([
-    { name: "Bhopal, M.P." },
-    { name: "Indore" },
+    // { name: "Bhopal, M.P." },
+    // { name: "Indore" },
   ]);
   const [favLocations, setFavLocations] = useState([
-    { name: "Junnar, Pune" },
-    { name: "Pune, Maharashtra" },
+    // { name: "Junnar, Pune" },
+    // { name: "Pune, Maharashtra" },
   ]);
 
   function deleteSavedLocation(locationToDelete) {

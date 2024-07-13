@@ -1,0 +1,95 @@
+.AuthorizationformWrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.235);
+}
+.AuthorizationformWrapper::before {
+  content: "";
+  /* content: url("../../public/mapBg.jpg"); */
+  background-image: url("../../public/mapBg.jpg");
+  background-size: cover;
+  background-position: cenetr center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.1;
+
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+.Authorizationform {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 20px;
+
+  background-color: rgba(255, 255, 255, 0.645);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.242);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.Authorizationform input {
+  border: none;
+  outline: none;
+  font-size: 18px;
+  background-color: transparent;
+  border-bottom: 2px solid rgb(213, 213, 213);
+  color: blue;
+  padding: 5px 0;
+}
+.Authorizationform input:focus {
+  border-bottom: 2px solid blue;
+}
+.Authorizationform input::placeholder {
+  color: rgb(151, 145, 145);
+}
+.AuthorizationMode {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 111;
+}
+.backBtn {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  z-index: 111;
+}
+.Authorizationform footer {
+  display: flex;
+  gap: 10px;
+}
+.Authorizationform footer .loginSignupTxtBtn {
+  color: blue;
+  cursor: pointer;
+}
+.Authorizationform footer .loginSignupTxtBtn:hover {
+  text-decoration: underline;
+}
+.welcome {
+  font-size: 40px;
+  text-transform: capitalize;
+}
+@media screen and (max-width: 550px) {
+  .Authorizationform {
+    gap: 20px;
+
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 40px;
+    justify-content: center;
+  }
+}

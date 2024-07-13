@@ -10,7 +10,7 @@ const AppSettingsContext = createContext();
 function SettingsContext({ children }) {
   const [tempUnit, setTempUnit] = useState("C");
   const [theme, setTheme] = useState("light");
-  const [isAuthorized, setIsAuthorized] = useState();
+  const [isAuthorized, setIsAuthorized] = useState(null);
   return (
     <AppSettingsContext.Provider
       value={{

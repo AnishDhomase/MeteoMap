@@ -6,9 +6,10 @@
   font-family: "roboto", sans-serif;
 }
 
-.app {
-  padding: 15px;
+::-webkit-scrollbar {
+  display: none;
 }
+
 @media screen and (max-width: 500px) {
   .app {
     padding: 0;

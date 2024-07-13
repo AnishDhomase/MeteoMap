@@ -1,8 +1,8 @@
 import { Badge } from "@mui/material";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import TuneIcon from "@mui/icons-material/Tune";
 import PersonIcon from "@mui/icons-material/Person";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 
 import "./Header.css";
@@ -11,82 +11,113 @@ import SavedPanel from "./savedPanel/SavedPanel";
 import FavPanel from "./favPanel/FavPanel";
 import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
 import Authorize from "../utils/authorize/Authorize";
-import SearchedBox from "../searchBar/SearchedBox";
 import { useAppSettings } from "../../context/SettingsContext";
 import { useLocations } from "../../context/LocationsContext";
+import SearchedBox from "../utils/searchBar/SearchedBox";
+import { Link } from "react-router-dom";
+import { useViewport } from "react-viewport-hooks";
+import toast from "react-hot-toast";
 
 function Header() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
   const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
   const [isFavPanelOpen, setIsFavPanelOpen] = useState(false);
   const { favLocations, savedLocations } = useLocations();
-
-  const { isAuthorized } = useAppSettings();
+  const { vw } = useViewport();
+  const {
+    tempUnit,
+    theme,
+    setTempUnit,
+    setTheme,
+    isAuthorized,
+    setIsAuthorized,
+  } = useAppSettings();
   return (
     <nav className="navbar">
-      <div className="saved">
-        <TooltipIcon
-          title="Saved"
-          onBtnClick={() => {
-            setIsSavedPanelOpen((isSavedPanelOpen) => !isSavedPanelOpen);
-            setIsFavPanelOpen(false);
-          }}
-          active={isSavedPanelOpen}
-        >
-          <Badge
-            badgeContent={savedLocations.length}
-            max={9}
-            color="primary"
-            sx={{ cursor: "pointer" }}
+      {vw > 750 && (
+        <div className="saved">
+          <TooltipIcon
+            title="Saved"
+            onBtnClick={() => {
+              if (!isAuthorized) {
+                toast.error(`To Access Saved Locations
+                   Try Login or SignUp!`);
+                return;
+              }
+              setIsSavedPanelOpen((isSavedPanelOpen) => !isSavedPanelOpen);
+              setIsFavPanelOpen(false);
+            }}
+            active={isSavedPanelOpen}
           >
-            <BookmarkIcon />
-          </Badge>
-        </TooltipIcon>
-        <TooltipIcon
-          title="Favourite"
-          onBtnClick={() => {
-            setIsFavPanelOpen((isFavPanelOpen) => !isFavPanelOpen);
-            setIsSavedPanelOpen(false);
-          }}
-          active={isFavPanelOpen}
-        >
-          <Badge
-            badgeContent={favLocations.length}
-            max={9}
-            color="primary"
-            sx={{ cursor: "pointer" }}
+            <Badge
+              badgeContent={savedLocations.length}
+              max={9}
+              color="primary"
+              sx={{ cursor: "pointer" }}
+            >
+              <BookmarkIcon />
+            </Badge>
+          </TooltipIcon>
+          <TooltipIcon
+            title="Favourite"
+            onBtnClick={() => {
+              if (!isAuthorized) {
+                toast.error(
+                  `To Access Favourite Locations, 
+                  Try Login or SignUp!`
+                );
+                return;
+              }
+              setIsFavPanelOpen((isFavPanelOpen) => !isFavPanelOpen);
+              setIsSavedPanelOpen(false);
+            }}
+            active={isFavPanelOpen}
           >
-            <FavoriteIcon />
-          </Badge>
-        </TooltipIcon>
-        <SavedPanel show={isSavedPanelOpen} />
-        <FavPanel show={isFavPanelOpen} />
-      </div>
+            <Badge
+              badgeContent={favLocations.length}
+              max={9}
+              color="primary"
+              sx={{ cursor: "pointer" }}
+            >
+              <FavoriteIcon />
+            </Badge>
+          </TooltipIcon>
+          <SavedPanel show={isSavedPanelOpen} direction="up" />
+          <FavPanel show={isFavPanelOpen} direction="up" />
+        </div>
+      )}
 
       <SearchedBox />
 
-      <div className="userSettings">
-        <div className="account">
-          <Authorize isAuthorized={isAuthorized} />
-          <TooltipIcon
-            title="Account"
-            onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
-            active={isAccPanelOpen}
-          >
-            <PersonIcon />
-          </TooltipIcon>
+      {vw > 750 && (
+        <div className="userSettings">
+          <Authorize />
+          <div className="menu">
+            <TooltipIcon
+              title="Menu"
+              onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
+              active={isAccPanelOpen}
+            >
+              <TuneIcon />
+            </TooltipIcon>
+          </div>
+          <AccountPanel show={isAccPanelOpen} direction="up" />
         </div>
-        <div className="menu">
-          <TooltipIcon
-            title="Saved"
-            onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
-            active={isAccPanelOpen}
-          >
-            <MenuIcon />
-          </TooltipIcon>
+      )}
+
+      {vw <= 750 && (
+        <div className="mobileLogin">
+          <Link to="/authorization">
+            <TooltipIcon
+              title="Account"
+              onBtnClick={() => setIsAccPanelOpen(!isAccPanelOpen)}
+              active={isAccPanelOpen}
+            >
+              <PersonIcon />
+            </TooltipIcon>
+          </Link>
         </div>
-        <AccountPanel show={isAccPanelOpen} />
-      </div>
+      )}
     </nav>
   );
 }

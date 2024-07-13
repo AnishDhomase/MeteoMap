@@ -1,15 +1,12 @@
 import { Button } from "@mui/material";
 
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useAppSettings } from "../../../context/SettingsContext";
 
-Authorize.propTypes = {
-  isAuthorized: PropTypes.bool,
-};
-
-function Authorize({ isAuthorized }) {
+function Authorize() {
+  const { isAuthorized } = useAppSettings();
   return (
-    <>
+    <div className="authorizeCompo">
       {isAuthorized ? (
         <p className="greet">Welcome, {isAuthorized.name}</p>
       ) : (
@@ -17,7 +14,7 @@ function Authorize({ isAuthorized }) {
           <Button variant="outlined">Login</Button>
         </Link>
       )}
-    </>
+    </div>
   );
 }
 
