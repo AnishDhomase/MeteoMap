@@ -102,7 +102,7 @@ function WeatherDetail() {
             <span>
               <ThermostatIcon />
             </span>
-            <span>Feels like 34 °C</span>
+            <span>Feels 34 °C</span>
           </div>
           <div className="dataRow">
             <span>

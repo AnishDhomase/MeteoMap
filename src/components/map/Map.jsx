@@ -6,6 +6,7 @@ import {
   TileLayer,
   useMapEvents,
 } from "react-leaflet";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 
 function Map() {
   function CurrentLocationMarker() {
@@ -53,6 +54,12 @@ function Map() {
         {/* <CurrentLocationMarker /> */}
         <DetectClick />
       </MapContainer>
+      <span className="myLocation">
+        <span>
+          <MyLocationIcon />
+        </span>
+        <span>Use My Location</span>
+      </span>
     </div>
   );
 }
