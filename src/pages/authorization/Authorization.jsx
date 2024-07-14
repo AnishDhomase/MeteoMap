@@ -16,12 +16,12 @@ function Authorization() {
     useState(false);
   const navigate = useNavigate();
   const {
-    tempUnit,
     theme,
-    setTempUnit,
     setTheme,
     isAuthorized,
     setIsAuthorized,
+    setSavedLocations,
+    setFavLocations,
   } = useAppSettings();
 
   const [formDetails, setFormDetails] = useState({
@@ -29,6 +29,7 @@ function Authorization() {
     email: "",
     password: "",
   });
+
   function handleSubmit(ev) {
     ev.preventDefault();
     if (!formDetails.name || !formDetails.email || !formDetails.password) {
@@ -52,6 +53,8 @@ function Authorization() {
           toast.error("Wrong Password!");
           return;
         }
+        setSavedLocations(AccDetails.accSavedLocations);
+        setFavLocations(AccDetails.accFavLocations);
       }
     } else if (AccDetails) {
       toast.error("Found Account With Same Username! Try Login!");
@@ -63,6 +66,8 @@ function Authorization() {
     if (page === "signup") {
       const newAccArray = JSON.stringify([...details, formDetails]);
       localStorage.setItem("userDetails", newAccArray);
+      setSavedLocations([]);
+      setFavLocations([]);
     }
     setFormDetails({
       name: "",
@@ -70,11 +75,13 @@ function Authorization() {
       password: "",
     });
     setIsAuthorized(formDetails);
+
     setSuccessfullAuthorization(true);
     setTimeout(function () {
       navigate("/");
     }, 2000);
   }
+
   return (
     <div className="AuthorizationformWrapper">
       <span className="AuthorizationMode">
@@ -104,6 +111,7 @@ function Authorization() {
           <ArrowBackIcon />
         </TooltipIcon>
       </span>
+
       <AnimatePresence mode="popLayout">
         {!successfullAuthorization && (
           <motion.form

@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 TooltipIcon.propTypes = {
   title: PropTypes.string,
   active: PropTypes.bool,
+  isOn: PropTypes.bool,
   children: PropTypes.any,
   onBtnClick: PropTypes.func,
 };
 
-function TooltipIcon({ title, children, onBtnClick, active }) {
+function TooltipIcon({ title, children, onBtnClick, active, isOn = false }) {
   return (
     <Tooltip title={title}>
       <IconButton

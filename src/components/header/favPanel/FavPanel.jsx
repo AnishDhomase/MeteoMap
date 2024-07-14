@@ -2,9 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
-import { useLocations } from "../../../context/LocationsContext";
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
 import { panelConfig } from "../../../helpers/panelConfig";
+import { useAppSettings } from "../../../context/SettingsContext";
 
 FavPanel.propTypes = {
   show: PropTypes.bool,
@@ -12,7 +12,8 @@ FavPanel.propTypes = {
 };
 
 function FavPanel({ show, direction = "up" }) {
-  const { favLocations, deleteFavLocation } = useLocations();
+  const { favLocations, deleteFavLocation } = useAppSettings();
+
   const { setSearchedLocation } = useSearchedLocation();
   const config = panelConfig(direction);
 

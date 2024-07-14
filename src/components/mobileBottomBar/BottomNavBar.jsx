@@ -5,7 +5,6 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { Badge } from "@mui/material";
 
 import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
-import { useLocations } from "../../context/LocationsContext";
 import SavedPanel from "../header/savedPanel/SavedPanel";
 import FavPanel from "../header/favPanel/FavPanel";
 import AccountPanel from "../header/accountPanel/AccountPanel";
@@ -16,7 +15,6 @@ function BottomNavBar() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
   const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
   const [isFavPanelOpen, setIsFavPanelOpen] = useState(false);
-  const { favLocations, savedLocations } = useLocations();
   const {
     tempUnit,
     theme,
@@ -24,6 +22,8 @@ function BottomNavBar() {
     setTheme,
     isAuthorized,
     setIsAuthorized,
+    favLocations,
+    savedLocations,
   } = useAppSettings();
 
   return (

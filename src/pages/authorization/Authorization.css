@@ -10,8 +10,7 @@
 }
 .AuthorizationformWrapper::before {
   content: "";
-  /* content: url("../../public/mapBg.jpg"); */
-  background-image: url("../../public/mapBg.jpg");
+  background-image: url("../../public/mapBg.png");
   background-size: cover;
   background-position: cenetr center;
   background-repeat: no-repeat;

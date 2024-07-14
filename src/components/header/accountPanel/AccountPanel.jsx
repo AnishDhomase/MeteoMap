@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import { useAppSettings } from "../../../context/SettingsContext";
 import { panelConfig } from "../../../helpers/panelConfig";
 import toast from "react-hot-toast";
+import { saveAccDataToLocalStorage } from "../../../helpers/saveAccDataToLocalStorage";
 
 AccountPanel.propTypes = {
   show: PropTypes.bool,
@@ -21,8 +22,26 @@ function AccountPanel({ show, direction = "up" }) {
     setTheme,
     isAuthorized,
     setIsAuthorized,
+    savedLocations,
+    favLocations,
+    setSavedLocations,
+    setFavLocations,
   } = useAppSettings();
   const config = panelConfig(direction);
+
+  // function saveAccDataToLocalStorage() {
+  //   const localDataBase = JSON.parse(localStorage.getItem("userDetails"));
+  //   const newLocalDataBase = localDataBase.map((account, ind) =>
+  //     account.name === isAuthorized.name
+  //       ? {
+  //           ...account,
+  //           accSavedLocations: savedLocations,
+  //           accFavLocations: favLocations,
+  //         }
+  //       : account
+  //   );
+  //   localStorage.setItem("userDetails", JSON.stringify(newLocalDataBase));
+  // }
 
   return (
     <AnimatePresence mode="popLayout">
@@ -100,7 +119,14 @@ function AccountPanel({ show, direction = "up" }) {
               className="logout btn"
               onClick={() => {
                 toast.success(`Successfully Logout!`);
+                saveAccDataToLocalStorage(
+                  isAuthorized,
+                  savedLocations,
+                  favLocations
+                );
                 setIsAuthorized(null);
+                setSavedLocations([]);
+                setFavLocations([]);
               }}
             >
               LOGOUT

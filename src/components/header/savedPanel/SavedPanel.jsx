@@ -2,9 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
 import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
-import { useLocations } from "../../../context/LocationsContext";
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
 import { panelConfig } from "../../../helpers/panelConfig";
+import { useAppSettings } from "../../../context/SettingsContext";
 
 SavedPanel.propTypes = {
   show: PropTypes.bool,
@@ -12,7 +12,7 @@ SavedPanel.propTypes = {
 };
 
 function SavedPanel({ show, direction = "up" }) {
-  const { savedLocations, deleteSavedLocation } = useLocations();
+  const { savedLocations, deleteSavedLocation } = useAppSettings();
   const { setSearchedLocation } = useSearchedLocation();
 
   const config = panelConfig(direction);
