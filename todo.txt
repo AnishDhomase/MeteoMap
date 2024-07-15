@@ -1,2 +1,4 @@
-
-Drawer has toggles, change User Name & Password, list of saved and fav locations, greet/logout/login
+change User Name & Password
+show all saved location on map as pointer
+show loaders, bundle splitting
+hourly and daily forecast

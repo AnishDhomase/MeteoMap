@@ -7,6 +7,7 @@ import "./Main.css";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useSearchedLocation } from "../../context/SearchedLocationContext";
 
 function Main() {
   const { vw } = useViewport();

@@ -10,13 +10,11 @@ import toast from "react-hot-toast";
 import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
 import { useAppSettings } from "../../context/SettingsContext";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useSearchedLocation } from "../../context/SearchedLocationContext";
+import { formatDate } from "../../helpers/formatDate";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
-// defaults.plugins.title.display = true;
-// defaults.plugins.title.align = "start";
-// defaults.plugins.title.font.size = 20;
-// defaults.plugins.title.color = "blue";
 
 function WeatherDetail() {
   const {
@@ -28,23 +26,35 @@ function WeatherDetail() {
     isInSavedLocation,
     isInFavLocation,
   } = useAppSettings();
-  // const [isSaved, setIsSaved] = useState(false);
-  // const [isFav, setIsFav] = useState(false);
+
+  const { searchedLocationWeatherData, searchedLocation } =
+    useSearchedLocation();
+  const data = searchedLocationWeatherData;
+  console.log(searchedLocationWeatherData);
 
   function handleSaveLocation() {
-    if (isInSavedLocation("currLocation")) deleteSavedLocation("currLocation");
-    else addToSavedLocation("currLocation");
+    if (isInSavedLocation(searchedLocation))
+      deleteSavedLocation(searchedLocation);
+    else addToSavedLocation(searchedLocation);
   }
   function handleFavLocation() {
-    if (isInFavLocation("currLocation")) deleteFavLocation("currLocation");
-    else addToFavLocation("currLocation");
+    if (isInFavLocation(searchedLocation)) deleteFavLocation(searchedLocation);
+    else addToFavLocation(searchedLocation);
   }
-
+  if (!data)
+    return (
+      <span className="NotData">
+        <h1>Search Locations To get weather Updates!</h1>
+        <p>{formatDate()}</p>
+      </span>
+    );
   return (
     <div className="weather">
-      <div className="date">Tuesday, 02 July 2024</div>
+      <div className="date">{formatDate()}</div>
 
-      <h1 className="LocationName">Pune, IN</h1>
+      <h1 className="LocationName">
+        {data?.name}, {data?.sys?.country}
+      </h1>
       <div className="savePanel">
         <span className="fav">
           <TooltipIcon
@@ -60,7 +70,7 @@ function WeatherDetail() {
           >
             <BookmarkIcon
               sx={
-                isInSavedLocation("currLocation")
+                isInSavedLocation(searchedLocation)
                   ? { color: "#198BFD" }
                   : { color: "gray" }
               }
@@ -81,7 +91,7 @@ function WeatherDetail() {
           >
             <FavoriteIcon
               sx={
-                isInFavLocation("currLocation")
+                isInFavLocation(searchedLocation)
                   ? { color: "#fd5c63" }
                   : { color: "gray" }
               }
@@ -92,45 +102,49 @@ function WeatherDetail() {
 
       <div className="data">
         <div className="left">
-          <img src="../../../public/image.png" alt="weather condition" />
+          <img
+            src={`https://openweathermap.org/img/wn/${data?.weather[0]?.icon}@2x.png`}
+            alt="weather condition"
+          />
         </div>
         <div className="mid">
-          <h1>34</h1>°C
+          <h1>{Math.floor(data?.main?.temp)}</h1>°C
         </div>
         <div className="right">
           <div className="dataRow">
             <span>
               <ThermostatIcon />
             </span>
-            <span>Feels 34 °C</span>
+            <span>Feels {data?.main?.feels_like} °C</span>
           </div>
           <div className="dataRow">
             <span>
               <WaterDropIcon />
             </span>
-            <span>Humidity 50%</span>
+            <span>Humidity {data?.main?.humidity}%</span>
           </div>
           <div className="dataRow">
             <span>
               <AirIcon />
             </span>
-            <span>Wind 3 Km/h</span>
+            <span>Wind {data?.wind?.speed} Km/h</span>
           </div>
         </div>
       </div>
+      <span className="condition">{data?.weather[0]?.description}</span>
 
       <div className="highlow">
         <div className="high">
           <span>
             <TrendingUpIcon />
           </span>
-          <span>34 °C</span>
+          <span>{data?.main?.temp_max} °C</span>
         </div>
         <div className="high">
           <span>
             <TrendingDownIcon />
           </span>
-          <span>34 °C</span>
+          <span>{data?.main?.temp_min} °C</span>
         </div>
       </div>
 

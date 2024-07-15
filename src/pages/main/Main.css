@@ -58,15 +58,24 @@
   gap: 40px;
 }
 .weatherMapBox .weather .data .mid {
+  position: relative;
   display: flex;
   gap: 10px;
   font-size: 25px;
   color: rgba(0, 0, 255, 0.605);
+  align-items: center;
 }
 .weatherMapBox .weather .data .mid h1 {
   font-size: 100px;
   font-weight: 400;
   color: rgb(69, 74, 100) !important;
+}
+.condition {
+  text-transform: capitalize;
+  /* background-color: red; */
+  color: rgba(0, 0, 255, 0.605);
+  font-size: 30px;
+  font-weight: 500;
 }
 .weatherMapBox .weather .data .left {
   width: 150px;
@@ -194,7 +203,16 @@
 .mapToggler:hover {
   scale: 1.02;
 }
-
+.NotData {
+  margin: auto;
+}
+.NotData h1,
+p {
+  text-align: center;
+}
+.NotData p {
+  margin-top: 10px;
+}
 @media screen and (max-width: 970px) {
   .weatherMapBox .weather .data {
     gap: 20px;

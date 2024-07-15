@@ -9,12 +9,16 @@ const AppSearchedLocationContext = createContext();
 
 function SearchedLocationContext({ children }) {
   const [searchedLocation, setSearchedLocation] = useState(null);
+  const [searchedLocationWeatherData, setSearchedLocationWeatherData] =
+    useState(null);
 
   return (
     <AppSearchedLocationContext.Provider
       value={{
         searchedLocation,
         setSearchedLocation,
+        searchedLocationWeatherData,
+        setSearchedLocationWeatherData,
       }}
     >
       {children}

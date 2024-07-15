@@ -5,6 +5,7 @@ import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
 import { panelConfig } from "../../../helpers/panelConfig";
 import { useAppSettings } from "../../../context/SettingsContext";
+import { getWeatherDataOfCity } from "../../../api/api";
 
 SavedPanel.propTypes = {
   show: PropTypes.bool,
@@ -13,9 +14,16 @@ SavedPanel.propTypes = {
 
 function SavedPanel({ show, direction = "up" }) {
   const { savedLocations, deleteSavedLocation } = useAppSettings();
-  const { setSearchedLocation } = useSearchedLocation();
+  const { setSearchedLocation, setSearchedLocationWeatherData } =
+    useSearchedLocation();
 
   const config = panelConfig(direction);
+
+  async function openLocationFromList(locationName) {
+    setSearchedLocation(locationName);
+    const data1 = await getWeatherDataOfCity(locationName);
+    setSearchedLocationWeatherData(data1);
+  }
 
   return (
     <AnimatePresence mode="popLayout">
@@ -35,7 +43,7 @@ function SavedPanel({ show, direction = "up" }) {
               <div className="location" key={location.name}>
                 <span
                   className="loc"
-                  onClick={() => setSearchedLocation(location.name)}
+                  onClick={() => openLocationFromList(location.name)}
                 >
                   {location.name}
                 </span>
