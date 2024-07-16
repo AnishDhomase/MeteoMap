@@ -1,6 +1,5 @@
 change User Name & Password
 show all saved location on map as pointer
 show loaders, bundle splitting
-hourly and daily forecast
-
+dar mode, temp unit switching
 code refactoring

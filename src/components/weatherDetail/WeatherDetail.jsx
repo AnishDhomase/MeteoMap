@@ -12,9 +12,50 @@ import { useAppSettings } from "../../context/SettingsContext";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useSearchedLocation } from "../../context/SearchedLocationContext";
 import { formatDate } from "../../helpers/formatDate";
+import moment from "moment-timezone";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
+
+function timeConverterToAMPM(timestamp, timezoneOffset) {
+  // Convert timestamp to milliseconds
+  const date = moment.unix(timestamp);
+
+  // Apply timezone offset (in seconds)
+  const adjustedDate = date.utcOffset(timezoneOffset / 60);
+
+  // Format the time in AM/PM
+  const formattedTime = adjustedDate.format("hh:mm A");
+
+  return formattedTime;
+}
+function getDayFromTimestamp(timestamp, timezoneOffset) {
+  // Convert timestamp to milliseconds if it's in seconds
+  const timestampMs = timestamp * 1000;
+
+  // Create a moment object from the timestamp
+  const date = moment(timestampMs);
+
+  // Apply timezone offset (convert seconds to minutes)
+  const adjustedDate = date.utcOffset(timezoneOffset / 60);
+
+  // Get the day of the week (0 is Sunday, 1 is Monday, etc.)
+  const dayNumber = adjustedDate.day();
+
+  // Convert day number to day name
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayName = days[dayNumber];
+
+  return dayName;
+}
+function getCurrentDay() {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const currentDate = new Date();
+  const dayNumber = currentDate.getDay();
+  return days[dayNumber];
+}
+
+const currentTimestamp = Math.floor(Date.now() / 1000);
 
 function WeatherDetail() {
   const {
@@ -30,7 +71,6 @@ function WeatherDetail() {
   const { searchedLocationWeatherData, searchedLocation } =
     useSearchedLocation();
   const data = searchedLocationWeatherData;
-  console.log(searchedLocationWeatherData);
 
   function handleSaveLocation() {
     if (isInSavedLocation(searchedLocation))
@@ -48,6 +88,29 @@ function WeatherDetail() {
         <p>{formatDate()}</p>
       </span>
     );
+
+  const afterCurrentTime = data.list.filter(
+    (item, ind) => item.dt > currentTimestamp
+  );
+  const FiveHrsForecast = afterCurrentTime.slice(0, 5);
+  const FormattedFiveHrsForecast = FiveHrsForecast.map((item, ind) => {
+    return {
+      localeTime: timeConverterToAMPM(item.dt, data?.timezone),
+      temp: item.main.temp,
+    };
+  });
+  const today = getCurrentDay();
+  const afterToday = afterCurrentTime
+    .map((item, ind) => {
+      return {
+        day: getDayFromTimestamp(item.dt, data?.timezone),
+        temp: item.main.temp,
+        icon: item.weather[0].icon,
+      };
+    })
+    .filter((item, ind) => item.day !== today);
+  let dailyForecast = afterToday.filter((item, ind) => ind % 8 === 0);
+
   return (
     <div className="weather">
       <div className="date">{formatDate()}</div>
@@ -152,17 +215,15 @@ function WeatherDetail() {
       <div className="lineChartBox">
         <Line
           data={{
-            labels: [
-              "10:00 AM",
-              "10:00 AM",
-              "10:00 AM",
-              "10:00 AM",
-              "10:00 AM",
-            ],
+            labels: FormattedFiveHrsForecast.map(
+              (forecast, ind) => forecast.localeTime
+            ),
             datasets: [
               {
                 label: "°C",
-                data: [28, 29, 38, 32, 25],
+                data: FormattedFiveHrsForecast.map(
+                  (forecast, ind) => forecast.temp
+                ),
                 fill: true,
                 borderColor: "blue",
                 tension: 0.1,
@@ -186,41 +247,18 @@ function WeatherDetail() {
 
       <h3 className="forecastTitle">Daily Forecast</h3>
       <div className="forecastBox">
-        <div className="forecastCard">
-          <header>Wed</header>
-          <main>
-            <img src="../../../public/image.png" alt="weather condition" />
-          </main>
-          <footer>13 °C</footer>
-        </div>
-        <div className="forecastCard">
-          <header>Wed</header>
-          <main>
-            <img src="../../../public/image.png" alt="weather condition" />
-          </main>
-          <footer>13 °C</footer>
-        </div>
-        <div className="forecastCard">
-          <header>Wed</header>
-          <main>
-            <img src="../../../public/image.png" alt="weather condition" />
-          </main>
-          <footer>13 °C</footer>
-        </div>
-        <div className="forecastCard">
-          <header>Wed</header>
-          <main>
-            <img src="../../../public/image.png" alt="weather condition" />
-          </main>
-          <footer>13 °C</footer>
-        </div>
-        <div className="forecastCard">
-          <header>Wed</header>
-          <main>
-            <img src="../../../public/image.png" alt="weather condition" />
-          </main>
-          <footer>13 °C</footer>
-        </div>
+        {dailyForecast.map((forecast, ind) => (
+          <div className="forecastCard" key={forecast + ind}>
+            <header>{forecast.day}</header>
+            <main>
+              <img
+                src={`https://openweathermap.org/img/wn/${forecast.icon}@2x.png`}
+                alt="weather condition"
+              />
+            </main>
+            <footer>{Math.round(forecast.temp)} °C</footer>
+          </div>
+        ))}
       </div>
     </div>
   );

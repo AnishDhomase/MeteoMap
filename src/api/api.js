@@ -36,5 +36,14 @@ export async function getWeatherDataOfCity(city) {
     { referrerPolicy: "unsafe-url" }
   );
   const data1 = await response1.json();
-  return data1;
+
+  const response2 = await fetch(
+    `${BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
+    { referrerPolicy: "unsafe-url" }
+  );
+
+  const data2 = await response2.json();
+  const mixedData = { ...data1, list: data2.list };
+
+  return mixedData;
 }
