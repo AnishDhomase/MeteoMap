@@ -8,7 +8,8 @@ export async function getWeatherDataOfCity(city) {
 
   if (city) {
     response = await fetch(
-      `${BASE_URL}/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`
+      `${BASE_URL}/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`,
+      { referrerPolicy: "unsafe-url" }
     );
     data = await response.json();
     lat = data[0].lat;
@@ -31,7 +32,8 @@ export async function getWeatherDataOfCity(city) {
   }
 
   const response1 = await fetch(
-    `${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+    `${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
+    { referrerPolicy: "unsafe-url" }
   );
   const data1 = await response1.json();
   return data1;
