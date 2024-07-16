@@ -10,6 +10,7 @@ import FavPanel from "../header/favPanel/FavPanel";
 import AccountPanel from "../header/accountPanel/AccountPanel";
 import { useAppSettings } from "../../context/SettingsContext";
 import toast from "react-hot-toast";
+import { useViewport } from "react-viewport-hooks";
 
 function BottomNavBar() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
@@ -25,6 +26,9 @@ function BottomNavBar() {
     favLocations,
     savedLocations,
   } = useAppSettings();
+
+  const { vw } = useViewport();
+  const badgeColor = vw < 750 ? "success" : "primary";
 
   return (
     <div className="bottomNavBar">
@@ -47,7 +51,7 @@ function BottomNavBar() {
         <Badge
           badgeContent={savedLocations.length}
           max={9}
-          color="primary"
+          color={badgeColor}
           sx={{ cursor: "pointer" }}
         >
           <BookmarkIcon />
@@ -72,7 +76,7 @@ function BottomNavBar() {
         <Badge
           badgeContent={favLocations.length}
           max={9}
-          color="primary"
+          color={badgeColor}
           sx={{ cursor: "pointer" }}
         >
           <FavoriteIcon />

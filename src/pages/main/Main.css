@@ -205,6 +205,7 @@
 }
 .NotData {
   margin: auto;
+  height: 100%;
 }
 .NotData h1,
 p {
@@ -249,6 +250,7 @@ p {
 @media screen and (max-width: 750px) {
   .weatherMapBox {
     position: relative;
+    min-height: 90vh;
   }
   .weatherMapBox .weather {
     width: 100vw;
