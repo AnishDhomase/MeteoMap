@@ -1,19 +1,21 @@
 import { useViewport } from "react-viewport-hooks";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import { lazy, Suspense, useState } from "react";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+
+import "./Main.css";
 import Header from "../../components/header/Header";
 import BottomNavBar from "../../components/mobileBottomBar/BottomNavBar";
+import PageLoader from "../../components/utils/pageLoader/PageLoader";
+
 import WeatherDetail from "../../components/weatherDetail/WeatherDetail";
-import Map from "../../components/map/Map";
-import "./Main.css";
-import FmdGoodIcon from "@mui/icons-material/FmdGood";
-import { useState } from "react";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { useSearchedLocation } from "../../context/SearchedLocationContext";
+const Map = lazy(() => import("../../components/map/Map"));
 
 function Main() {
   const { vw } = useViewport();
   const [isMapOpen, setIsMapOpen] = useState(false);
   return (
-    <>
+    <Suspense fallback={<PageLoader />}>
       {!isMapOpen && <Header />}
       <main className="weatherMapBox">
         {vw <= 750 && (
@@ -28,7 +30,7 @@ function Main() {
         {(vw > 750 || isMapOpen) && <Map />}
       </main>
       {vw <= 750 && <BottomNavBar />}
-    </>
+    </Suspense>
   );
 }
 
