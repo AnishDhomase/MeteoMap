@@ -13,7 +13,7 @@ FavPanel.propTypes = {
 };
 
 function FavPanel({ show, direction = "up" }) {
-  const { favLocations, deleteFavLocation } = useAppSettings();
+  const { favLocations, deleteFavLocation, tempUnit } = useAppSettings();
 
   const { setSearchedLocation, setSearchedLocationWeatherData } =
     useSearchedLocation();
@@ -21,7 +21,7 @@ function FavPanel({ show, direction = "up" }) {
 
   async function openLocationFromList(locationName) {
     setSearchedLocation(locationName);
-    const data1 = await getWeatherDataOfCity(locationName);
+    const data1 = await getWeatherDataOfCity(locationName, tempUnit);
     setSearchedLocationWeatherData(data1);
   }
 

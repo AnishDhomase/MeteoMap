@@ -12,6 +12,7 @@ import { useSearchedLocation } from "../../context/SearchedLocationContext";
 import PropTypes from "prop-types";
 import toast from "react-hot-toast";
 import { getWeatherDataOfCity } from "../../api/api";
+import { useAppSettings } from "../../context/SettingsContext";
 
 const API_KEY = "b4620542d70be9a9dbdbae914c06ebc1";
 
@@ -27,6 +28,8 @@ function Map({ isFull }) {
     searchedLocationWeatherData,
   } = useSearchedLocation();
   const data = searchedLocationWeatherData;
+
+  const { tempUnit } = useAppSettings();
 
   // const [pos, setPos] = useState([19.2032, 73.8743]);
   const [pos, setPos] = useState([0, 0]);
@@ -52,7 +55,7 @@ function Map({ isFull }) {
     const nameOfCity = data[0].name;
     setSearchedLocation(nameOfCity);
 
-    const data1 = await getWeatherDataOfCity(nameOfCity);
+    const data1 = await getWeatherDataOfCity(nameOfCity, tempUnit);
     setSearchedLocationWeatherData(data1);
   }
   function getBrowserLocation(isToUpdateQuery) {

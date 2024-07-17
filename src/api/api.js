@@ -3,8 +3,10 @@ import toast from "react-hot-toast";
 const API_KEY = "b4620542d70be9a9dbdbae914c06ebc1";
 const BASE_URL = "http://api.openweathermap.org";
 
-export async function getWeatherDataOfCity(city) {
+export async function getWeatherDataOfCity(city, unit) {
   let response, data, lat, lon;
+
+  const unitSystem = unit === "C" ? "metric" : "imperial";
 
   if (city) {
     response = await fetch(
@@ -32,13 +34,13 @@ export async function getWeatherDataOfCity(city) {
   }
 
   const response1 = await fetch(
-    `${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
+    `${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${unitSystem}`,
     { referrerPolicy: "unsafe-url" }
   );
   const data1 = await response1.json();
 
   const response2 = await fetch(
-    `${BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`,
+    `${BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${unitSystem}`,
     { referrerPolicy: "unsafe-url" }
   );
 

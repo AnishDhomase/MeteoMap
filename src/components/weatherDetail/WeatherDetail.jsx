@@ -66,6 +66,7 @@ function WeatherDetail() {
     addToSavedLocation,
     isInSavedLocation,
     isInFavLocation,
+    tempUnit,
   } = useAppSettings();
 
   const { searchedLocationWeatherData, searchedLocation } =
@@ -171,26 +172,31 @@ function WeatherDetail() {
           />
         </div>
         <div className="mid">
-          <h1>{Math.floor(data?.main?.temp)}</h1>°C
+          <h1>{Math.floor(data?.main?.temp)}</h1>
+          {tempUnit === "C" ? "°C" : "°F"}
         </div>
         <div className="right">
           <div className="dataRow">
             <span>
               <ThermostatIcon />
             </span>
-            <span>Feels {data?.main?.feels_like} °C</span>
+            <span>
+              Feels {data?.main?.feels_like} {tempUnit === "C" ? "°C" : "°F"}
+            </span>
           </div>
           <div className="dataRow">
             <span>
               <WaterDropIcon />
             </span>
-            <span>Humidity {data?.main?.humidity}%</span>
+            <span>Humidity {data?.main?.humidity} %</span>
           </div>
           <div className="dataRow">
             <span>
               <AirIcon />
             </span>
-            <span>Wind {data?.wind?.speed} Km/h</span>
+            <span>
+              Wind {data?.wind?.speed} {tempUnit === "C" ? "Kph" : "Mph"}
+            </span>
           </div>
         </div>
       </div>
@@ -201,13 +207,17 @@ function WeatherDetail() {
           <span>
             <TrendingUpIcon />
           </span>
-          <span>{data?.main?.temp_max} °C</span>
+          <span>
+            {data?.main?.temp_max} {tempUnit === "C" ? "°C" : "°F"}
+          </span>
         </div>
         <div className="high">
           <span>
             <TrendingDownIcon />
           </span>
-          <span>{data?.main?.temp_min} °C</span>
+          <span>
+            {data?.main?.temp_min} {tempUnit === "C" ? "°C" : "°F"}
+          </span>
         </div>
       </div>
 
@@ -220,7 +230,7 @@ function WeatherDetail() {
             ),
             datasets: [
               {
-                label: "°C",
+                label: tempUnit === "C" ? "°C" : "°F",
                 data: FormattedFiveHrsForecast.map(
                   (forecast, ind) => forecast.temp
                 ),
@@ -256,7 +266,9 @@ function WeatherDetail() {
                 alt="weather condition"
               />
             </main>
-            <footer>{Math.round(forecast.temp)} °C</footer>
+            <footer>
+              {Math.round(forecast.temp)} {tempUnit === "C" ? "°C" : "°F"}
+            </footer>
           </div>
         ))}
       </div>

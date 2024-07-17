@@ -13,7 +13,7 @@ SavedPanel.propTypes = {
 };
 
 function SavedPanel({ show, direction = "up" }) {
-  const { savedLocations, deleteSavedLocation } = useAppSettings();
+  const { savedLocations, deleteSavedLocation, tempUnit } = useAppSettings();
   const { setSearchedLocation, setSearchedLocationWeatherData } =
     useSearchedLocation();
 
@@ -21,7 +21,7 @@ function SavedPanel({ show, direction = "up" }) {
 
   async function openLocationFromList(locationName) {
     setSearchedLocation(locationName);
-    const data1 = await getWeatherDataOfCity(locationName);
+    const data1 = await getWeatherDataOfCity(locationName, tempUnit);
     setSearchedLocationWeatherData(data1);
   }
 
