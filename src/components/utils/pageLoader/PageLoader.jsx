@@ -6,10 +6,9 @@ function PageLoader() {
     <div className="loaderBox">
       <MagnifyingGlass
         visible={true}
-        height="80"
-        width="80"
+        height="100"
+        width="100"
         ariaLabel="magnifying-glass-loading"
-        wrapperStyle={{}}
         wrapperClass="magnifying-glass-wrapper"
         glassColor="#c0efff"
         color="gray"

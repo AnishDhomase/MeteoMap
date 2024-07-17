@@ -6,10 +6,9 @@ import { Badge } from "@mui/material";
 import { useViewport } from "react-viewport-hooks";
 import toast from "react-hot-toast";
 
-import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
 import { useAppSettings } from "../../context/SettingsContext";
+import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
 import ComponentLoader from "../utils/componentLoader/ComponentLoader";
-
 const AccountPanel = lazy(() => import("../header/accountPanel/AccountPanel"));
 const FavPanel = lazy(() => import("../header/favPanel/FavPanel"));
 const SavedPanel = lazy(() => import("../header/savedPanel/SavedPanel"));
@@ -18,18 +17,9 @@ function BottomNavBar() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
   const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
   const [isFavPanelOpen, setIsFavPanelOpen] = useState(false);
-  const {
-    tempUnit,
-    theme,
-    setTempUnit,
-    setTheme,
-    isAuthorized,
-    setIsAuthorized,
-    favLocations,
-    savedLocations,
-  } = useAppSettings();
-
+  const { isAuthorized, favLocations, savedLocations } = useAppSettings();
   const { vw } = useViewport();
+
   const badgeColor = vw < 750 ? "success" : "primary";
 
   return (

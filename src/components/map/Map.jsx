@@ -7,12 +7,13 @@ import {
   TileLayer,
   useMap,
 } from "react-leaflet";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import { useSearchedLocation } from "../../context/SearchedLocationContext";
 import PropTypes from "prop-types";
 import toast from "react-hot-toast";
-import { getWeatherDataOfCity } from "../../api/api";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+
+import { useSearchedLocation } from "../../context/SearchedLocationContext";
 import { useAppSettings } from "../../context/SettingsContext";
+import { getWeatherDataOfCity } from "../../api/api";
 
 const API_KEY = "b4620542d70be9a9dbdbae914c06ebc1";
 
@@ -21,20 +22,17 @@ Map.propTypes = {
 };
 
 function Map({ isFull }) {
+  const [pos, setPos] = useState([0, 0]);
   const {
-    searchedLocation,
     setSearchedLocation,
     setSearchedLocationWeatherData,
     searchedLocationWeatherData,
   } = useSearchedLocation();
-  const data = searchedLocationWeatherData;
-
   const { tempUnit } = useAppSettings();
 
-  // const [pos, setPos] = useState([19.2032, 73.8743]);
-  const [pos, setPos] = useState([0, 0]);
+  const data = searchedLocationWeatherData;
 
-  // Change on Search
+  // Change pos on Search
   useEffect(
     function () {
       const position = [
@@ -46,7 +44,7 @@ function Map({ isFull }) {
     [data]
   );
 
-  // On mount get current location
+  // On mount get current location and set map to current location
   async function setSearchQuery(lat, lon) {
     const res = await fetch(
       `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`
@@ -92,13 +90,6 @@ function Map({ isFull }) {
           // url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
-        {/* <Marker position={pos}>
-          <Popup>
-            <h3>
-              {data ? `${data?.name}, ${data?.sys?.country}` : "Junnar, IN"}
-            </h3>
-          </Popup>
-        </Marker> */}
         <FeatureGroup pathOptions={{ color: "blue" }}>
           <Popup>
             {data
@@ -109,6 +100,7 @@ function Map({ isFull }) {
         </FeatureGroup>
         <ChangeCenter position={pos} />
       </MapContainer>
+
       <span className="myLocation">
         <span>
           <MyLocationIcon />

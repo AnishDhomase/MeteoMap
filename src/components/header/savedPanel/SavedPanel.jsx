@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
-import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
-import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
+import PropTypes from "prop-types";
+
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
-import { panelConfig } from "../../../helpers/panelConfig";
 import { useAppSettings } from "../../../context/SettingsContext";
+import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
+import NoLocationsPanel from "../../utils/noLocationsPanel/NoLocationsPanel";
+import { panelConfig } from "../../../helpers/panelConfig";
 import { getWeatherDataOfCity } from "../../../api/api";
 
 SavedPanel.propTypes = {
@@ -56,10 +58,7 @@ function SavedPanel({ show, direction = "up" }) {
               </div>
             ))
           ) : (
-            <>
-              <h3>No saved locations yet</h3>
-              <p>Start adding locations!</p>
-            </>
+            <NoLocationsPanel title="Saved" />
           )}
         </motion.div>
       )}

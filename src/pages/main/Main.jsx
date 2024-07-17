@@ -1,13 +1,12 @@
 import { useViewport } from "react-viewport-hooks";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
-import { lazy, Suspense, useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { lazy, Suspense, useState } from "react";
 
 import "./Main.css";
 import Header from "../../components/header/Header";
 import BottomNavBar from "../../components/mobileBottomBar/BottomNavBar";
 import PageLoader from "../../components/utils/pageLoader/PageLoader";
-
 import WeatherDetail from "../../components/weatherDetail/WeatherDetail";
 const Map = lazy(() => import("../../components/map/Map"));
 

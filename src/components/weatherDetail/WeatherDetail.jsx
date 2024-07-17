@@ -1,61 +1,25 @@
+import { Chart, defaults } from "chart.js/auto";
+import { Line } from "react-chartjs-2";
+import toast from "react-hot-toast";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import AirIcon from "@mui/icons-material/Air";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import { Chart, defaults, plugins } from "chart.js/auto";
-import { Line } from "react-chartjs-2";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import toast from "react-hot-toast";
-import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
-import { useAppSettings } from "../../context/SettingsContext";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+
 import { useSearchedLocation } from "../../context/SearchedLocationContext";
-import { formatDate } from "../../helpers/formatDate";
-import moment from "moment-timezone";
+import { useAppSettings } from "../../context/SettingsContext";
+import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
+import { formatDate, getCurrentTimestamp } from "../../helpers/dateTime";
+import NoSearchedLocation from "../utils/noSearchedLocation/NoSearchedLocation";
+import { getForecastData } from "../../helpers/getForecastData";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 
-function timeConverterToAMPM(timestamp, timezoneOffset) {
-  // Convert timestamp to milliseconds
-  const date = moment.unix(timestamp);
-
-  // Apply timezone offset (in seconds)
-  const adjustedDate = date.utcOffset(timezoneOffset / 60);
-
-  // Format the time in AM/PM
-  const formattedTime = adjustedDate.format("hh:mm A");
-
-  return formattedTime;
-}
-function getDayFromTimestamp(timestamp, timezoneOffset) {
-  // Convert timestamp to milliseconds if it's in seconds
-  const timestampMs = timestamp * 1000;
-
-  // Create a moment object from the timestamp
-  const date = moment(timestampMs);
-
-  // Apply timezone offset (convert seconds to minutes)
-  const adjustedDate = date.utcOffset(timezoneOffset / 60);
-
-  // Get the day of the week (0 is Sunday, 1 is Monday, etc.)
-  const dayNumber = adjustedDate.day();
-
-  // Convert day number to day name
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const dayName = days[dayNumber];
-
-  return dayName;
-}
-function getCurrentDay() {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const currentDate = new Date();
-  const dayNumber = currentDate.getDay();
-  return days[dayNumber];
-}
-
-const currentTimestamp = Math.floor(Date.now() / 1000);
+const currentTimestamp = getCurrentTimestamp();
 
 function WeatherDetail() {
   const {
@@ -68,10 +32,11 @@ function WeatherDetail() {
     isInFavLocation,
     tempUnit,
   } = useAppSettings();
-
   const { searchedLocationWeatherData, searchedLocation } =
     useSearchedLocation();
+
   const data = searchedLocationWeatherData;
+  if (!data) return <NoSearchedLocation />;
 
   function handleSaveLocation() {
     if (isInSavedLocation(searchedLocation))
@@ -82,43 +47,37 @@ function WeatherDetail() {
     if (isInFavLocation(searchedLocation)) deleteFavLocation(searchedLocation);
     else addToFavLocation(searchedLocation);
   }
-  if (!data)
-    return (
-      <span className="NotData">
-        <h1>Search Locations To get weather Updates!</h1>
-        <p>{formatDate()}</p>
-      </span>
-    );
-
-  const afterCurrentTime = data.list.filter(
-    (item, ind) => item.dt > currentTimestamp
+  const { FormattedFiveHrsForecast, dailyForecast } = getForecastData(
+    data,
+    currentTimestamp
   );
-  const FiveHrsForecast = afterCurrentTime.slice(0, 5);
-  const FormattedFiveHrsForecast = FiveHrsForecast.map((item, ind) => {
-    return {
-      localeTime: timeConverterToAMPM(item.dt, data?.timezone),
-      temp: item.main.temp,
-    };
-  });
-  const today = getCurrentDay();
-  const afterToday = afterCurrentTime
-    .map((item, ind) => {
-      return {
-        day: getDayFromTimestamp(item.dt, data?.timezone),
-        temp: item.main.temp,
-        icon: item.weather[0].icon,
-      };
-    })
-    .filter((item, ind) => item.day !== today);
-  let dailyForecast = afterToday.filter((item, ind) => ind % 8 === 0);
+  const formattedWeatherInfo = {
+    date: formatDate(),
+    locationName: data.name,
+    locationCountry: data.sys.country,
+    iconOfWeather: data?.weather[0]?.icon,
+    weatherDescription: data?.weather[0]?.description,
+    temp: Math.floor(data.main.temp),
+    tempFeelsLike: data.main.feels_like,
+    tempUnit: tempUnit === "C" ? "°C" : "°F",
+    humidity: data.main.humidity,
+    windSpeed: data?.wind?.speed,
+    windSpeedUnit: tempUnit === "C" ? "Kph" : "Mph",
+    minTemp: data?.main?.temp_min,
+    maxTemp: data?.main?.temp_max,
+    hourlyForecast: FormattedFiveHrsForecast,
+    dailyForecast: dailyForecast,
+  };
 
   return (
     <div className="weather">
-      <div className="date">{formatDate()}</div>
+      <div className="date">{formattedWeatherInfo.date}</div>
 
       <h1 className="LocationName">
-        {data?.name}, {data?.sys?.country}
+        {formattedWeatherInfo.locationName},{" "}
+        {formattedWeatherInfo.locationCountry}
       </h1>
+
       <div className="savePanel">
         <span className="fav">
           <TooltipIcon
@@ -167,13 +126,13 @@ function WeatherDetail() {
       <div className="data">
         <div className="left">
           <img
-            src={`https://openweathermap.org/img/wn/${data?.weather[0]?.icon}@2x.png`}
+            src={`https://openweathermap.org/img/wn/${formattedWeatherInfo.iconOfWeather}@2x.png`}
             alt="weather condition"
           />
         </div>
         <div className="mid">
-          <h1>{Math.floor(data?.main?.temp)}</h1>
-          {tempUnit === "C" ? "°C" : "°F"}
+          <h1>{Math.floor(formattedWeatherInfo.temp)}</h1>
+          {formattedWeatherInfo.tempUnit}
         </div>
         <div className="right">
           <div className="dataRow">
@@ -181,26 +140,30 @@ function WeatherDetail() {
               <ThermostatIcon />
             </span>
             <span>
-              Feels {data?.main?.feels_like} {tempUnit === "C" ? "°C" : "°F"}
+              Feels {formattedWeatherInfo.tempFeelsLike}{" "}
+              {formattedWeatherInfo.tempUnit}
             </span>
           </div>
           <div className="dataRow">
             <span>
               <WaterDropIcon />
             </span>
-            <span>Humidity {data?.main?.humidity} %</span>
+            <span>Humidity {formattedWeatherInfo.humidity} %</span>
           </div>
           <div className="dataRow">
             <span>
               <AirIcon />
             </span>
             <span>
-              Wind {data?.wind?.speed} {tempUnit === "C" ? "Kph" : "Mph"}
+              Wind {formattedWeatherInfo.windSpeed}{" "}
+              {formattedWeatherInfo.windSpeedUnit}
             </span>
           </div>
         </div>
       </div>
-      <span className="condition">{data?.weather[0]?.description}</span>
+      <span className="condition">
+        {formattedWeatherInfo.weatherDescription}
+      </span>
 
       <div className="highlow">
         <div className="high">
@@ -208,7 +171,7 @@ function WeatherDetail() {
             <TrendingUpIcon />
           </span>
           <span>
-            {data?.main?.temp_max} {tempUnit === "C" ? "°C" : "°F"}
+            {formattedWeatherInfo.maxTemp} {formattedWeatherInfo.tempUnit}
           </span>
         </div>
         <div className="high">
@@ -216,7 +179,7 @@ function WeatherDetail() {
             <TrendingDownIcon />
           </span>
           <span>
-            {data?.main?.temp_min} {tempUnit === "C" ? "°C" : "°F"}
+            {formattedWeatherInfo.minTemp} {formattedWeatherInfo.tempUnit}
           </span>
         </div>
       </div>
@@ -225,13 +188,13 @@ function WeatherDetail() {
       <div className="lineChartBox">
         <Line
           data={{
-            labels: FormattedFiveHrsForecast.map(
+            labels: formattedWeatherInfo.hourlyForecast.map(
               (forecast, ind) => forecast.localeTime
             ),
             datasets: [
               {
                 label: tempUnit === "C" ? "°C" : "°F",
-                data: FormattedFiveHrsForecast.map(
+                data: formattedWeatherInfo.hourlyForecast.map(
                   (forecast, ind) => forecast.temp
                 ),
                 fill: true,
@@ -241,11 +204,6 @@ function WeatherDetail() {
             ],
           }}
           options={{
-            // plugins: {
-            //   title: {
-            //     text: "Hourly Forecast",
-            //   },
-            // },
             elements: {
               line: {
                 tension: 0.5,
@@ -257,7 +215,7 @@ function WeatherDetail() {
 
       <h3 className="forecastTitle">Daily Forecast</h3>
       <div className="forecastBox">
-        {dailyForecast.map((forecast, ind) => (
+        {formattedWeatherInfo.dailyForecast.map((forecast, ind) => (
           <div className="forecastCard" key={forecast + ind}>
             <header>{forecast.day}</header>
             <main>

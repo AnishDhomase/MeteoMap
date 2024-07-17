@@ -1,11 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
-import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
+
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
-import { panelConfig } from "../../../helpers/panelConfig";
 import { useAppSettings } from "../../../context/SettingsContext";
+import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
+import { panelConfig } from "../../../helpers/panelConfig";
 import { getWeatherDataOfCity } from "../../../api/api";
+import NoLocationsPanel from "../../utils/noLocationsPanel/NoLocationsPanel";
 
 FavPanel.propTypes = {
   show: PropTypes.bool,
@@ -14,7 +16,6 @@ FavPanel.propTypes = {
 
 function FavPanel({ show, direction = "up" }) {
   const { favLocations, deleteFavLocation, tempUnit } = useAppSettings();
-
   const { setSearchedLocation, setSearchedLocationWeatherData } =
     useSearchedLocation();
   const config = panelConfig(direction);
@@ -56,12 +57,7 @@ function FavPanel({ show, direction = "up" }) {
               </div>
             ))
           ) : (
-            <>
-              <>
-                <h3>No favorite locations yet</h3>
-                <p>Start adding locations!</p>
-              </>
-            </>
+            <NoLocationsPanel title="Favorite" />
           )}
         </motion.div>
       )}

@@ -1,19 +1,18 @@
 import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import PropTypes from "prop-types";
+import { useEffect } from "react";
 
-import SearchBarAutoComplete from "./SearchBarAutoComplete";
+import { useAppSettings } from "../../../context/SettingsContext";
 import { useSearchedLocation } from "../../../context/SearchedLocationContext";
 import { getWeatherDataOfCity } from "../../../api/api";
-import { useAppSettings } from "../../../context/SettingsContext";
-import { useEffect } from "react";
+import SearchBarAutoComplete from "./SearchBarAutoComplete";
 
 function SearchedBox() {
   const { searchedLocation, setSearchedLocationWeatherData } =
     useSearchedLocation();
-
   const { tempUnit } = useAppSettings();
 
+  // When temp unit changes fetch data in that unit
   useEffect(
     function () {
       getCityWeather(searchedLocation, tempUnit);
@@ -21,17 +20,16 @@ function SearchedBox() {
     [tempUnit]
   );
 
-  async function getCityWeather(searchedLocation, tempUnit) {
+  async function getCityWeather() {
     if (!searchedLocation) return;
     const data = await getWeatherDataOfCity(searchedLocation, tempUnit);
     setSearchedLocationWeatherData(data);
   }
-  console.log("render");
 
   return (
     <div className="input">
       <SearchBarAutoComplete />
-      <IconButton onClick={() => getCityWeather(searchedLocation, tempUnit)}>
+      <IconButton onClick={() => getCityWeather()}>
         <SearchIcon color="primary" />
       </IconButton>
     </div>

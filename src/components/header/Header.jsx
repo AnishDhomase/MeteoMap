@@ -11,32 +11,37 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import TuneIcon from "@mui/icons-material/Tune";
 import PersonIcon from "@mui/icons-material/Person";
-import { useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { useViewport } from "react-viewport-hooks";
+import { useState } from "react";
 
 import "./Header.css";
+import { useAppSettings } from "../../context/SettingsContext";
+import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
+import Authorize from "../utils/authorize/Authorize";
+import SearchedBox from "../utils/searchBar/SearchedBox";
+import { saveAccDataToLocalStorage } from "../../helpers/saveAccDataToLocalStorage";
 import AccountPanel from "./accountPanel/AccountPanel";
 import SavedPanel from "./savedPanel/SavedPanel";
 import FavPanel from "./favPanel/FavPanel";
-import TooltipIcon from "../utils/tooltipIcon/TooltipIcon";
-import Authorize from "../utils/authorize/Authorize";
-import { useAppSettings } from "../../context/SettingsContext";
-import SearchedBox from "../utils/searchBar/SearchedBox";
-import { Link } from "react-router-dom";
-import { useViewport } from "react-viewport-hooks";
-import toast from "react-hot-toast";
-import { saveAccDataToLocalStorage } from "../../helpers/saveAccDataToLocalStorage";
+import { handleLogout } from "../../helpers/handleLogout";
 
 function Header() {
   const [isAccPanelOpen, setIsAccPanelOpen] = useState(false);
   const [isSavedPanelOpen, setIsSavedPanelOpen] = useState(false);
   const [isFavPanelOpen, setIsFavPanelOpen] = useState(false);
-  const { favLocations, savedLocations } = useAppSettings();
-  const { vw } = useViewport();
-  const { isAuthorized, setIsAuthorized, setSavedLocations, setFavLocations } =
-    useAppSettings();
-
   const [isConsentBoxOpen, setIsConsentBoxOpen] = useState(false);
+  const { vw } = useViewport();
+  const {
+    favLocations,
+    savedLocations,
+    isAuthorized,
+    setIsAuthorized,
+    setSavedLocations,
+    setFavLocations,
+  } = useAppSettings();
 
   const handleClose = () => {
     setIsConsentBoxOpen(false);
@@ -140,6 +145,8 @@ function Header() {
           </div>
         )}
       </nav>
+
+      {/* Consent Box to logout in mobile device */}
       <Dialog
         open={isConsentBoxOpen}
         onClose={handleClose}
@@ -158,15 +165,15 @@ function Header() {
           <Button onClick={handleClose}>No</Button>
           <Button
             onClick={() => {
-              toast.success(`Successfully Logout!`);
-              saveAccDataToLocalStorage(
+              handleLogout(
                 isAuthorized,
                 savedLocations,
-                favLocations
+                favLocations,
+                setIsAuthorized,
+                setSavedLocations,
+                setFavLocations,
+                saveAccDataToLocalStorage
               );
-              setIsAuthorized(null);
-              setSavedLocations([]);
-              setFavLocations([]);
               handleClose();
             }}
             autoFocus

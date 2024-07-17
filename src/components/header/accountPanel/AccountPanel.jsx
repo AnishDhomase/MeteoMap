@@ -1,13 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
-import PropTypes from "prop-types";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { Typography } from "@mui/material";
+import PropTypes from "prop-types";
+
 import { useAppSettings } from "../../../context/SettingsContext";
+import TooltipIcon from "../../utils/tooltipIcon/TooltipIcon";
 import { panelConfig } from "../../../helpers/panelConfig";
-import toast from "react-hot-toast";
 import { saveAccDataToLocalStorage } from "../../../helpers/saveAccDataToLocalStorage";
+import { handleLogout } from "../../../helpers/handleLogout";
 
 AccountPanel.propTypes = {
   show: PropTypes.bool,
@@ -28,20 +29,6 @@ function AccountPanel({ show, direction = "up" }) {
     setFavLocations,
   } = useAppSettings();
   const config = panelConfig(direction);
-
-  // function saveAccDataToLocalStorage() {
-  //   const localDataBase = JSON.parse(localStorage.getItem("userDetails"));
-  //   const newLocalDataBase = localDataBase.map((account, ind) =>
-  //     account.name === isAuthorized.name
-  //       ? {
-  //           ...account,
-  //           accSavedLocations: savedLocations,
-  //           accFavLocations: favLocations,
-  //         }
-  //       : account
-  //   );
-  //   localStorage.setItem("userDetails", JSON.stringify(newLocalDataBase));
-  // }
 
   return (
     <AnimatePresence mode="popLayout">
@@ -114,20 +101,21 @@ function AccountPanel({ show, direction = "up" }) {
               </div>
             </div>
           </div>
+
           {isAuthorized && (
             <button
               className="logout btn"
-              onClick={() => {
-                toast.success(`Successfully Logout!`);
-                saveAccDataToLocalStorage(
+              onClick={() =>
+                handleLogout(
                   isAuthorized,
                   savedLocations,
-                  favLocations
-                );
-                setIsAuthorized(null);
-                setSavedLocations([]);
-                setFavLocations([]);
-              }}
+                  favLocations,
+                  setIsAuthorized,
+                  setSavedLocations,
+                  setFavLocations,
+                  saveAccDataToLocalStorage
+                )
+              }
             >
               LOGOUT
             </button>

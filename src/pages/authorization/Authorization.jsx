@@ -1,20 +1,25 @@
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+
 import "./Authorization.css";
 import { useAppSettings } from "../../context/SettingsContext";
 import TooltipIcon from "../../components/utils/tooltipIcon/TooltipIcon";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import toast from "react-hot-toast";
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function Authorization() {
   const [page, setPage] = useState("login");
   const [successfullAuthorization, setSuccessfullAuthorization] =
     useState(false);
-  const navigate = useNavigate();
+  const [formDetails, setFormDetails] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const {
     theme,
     setTheme,
@@ -23,13 +28,9 @@ function Authorization() {
     setSavedLocations,
     setFavLocations,
   } = useAppSettings();
+  const navigate = useNavigate();
 
-  const [formDetails, setFormDetails] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
+  // Handle Login/Signup Form Submit
   function handleSubmit(ev) {
     ev.preventDefault();
     if (!formDetails.name || !formDetails.email || !formDetails.password) {

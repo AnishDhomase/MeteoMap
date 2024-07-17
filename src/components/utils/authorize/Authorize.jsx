@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
-
 import { Link } from "react-router-dom";
+
 import { useAppSettings } from "../../../context/SettingsContext";
 
 function Authorize() {
